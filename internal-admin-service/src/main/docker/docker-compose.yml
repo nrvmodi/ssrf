@@ -1,0 +1,9 @@
+version: '2'
+#networks:
+services:
+
+  internal-user-service:
+    image: nrvmodi/internal-user-service
+    container_name: internal-user-service
+    ports:
+      - 8081:8081

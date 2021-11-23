@@ -1,0 +1,9 @@
+version: '2'
+#networks:
+services:
+
+  java-demo:
+    image: test/spring-docker-demo
+    container_name: spring-docker-demo
+    ports:
+      - 8080:8080
