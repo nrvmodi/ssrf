@@ -27,3 +27,15 @@ To prevent SSRF vulnerabilities in web applications, it is recommended to adhere
 * Any input accepted from the user should be validated and rejected if it does not match the positive specification expected.
 * If possible, do not accept user input in functions that control where the web server can fetch resources.
 
+## Example
+
+We have created three service for demo purpose
+
+1. **public-web-service** : This service is exposed on internet
+2. **internal-user-service** : This service is not exposed to internet but the resources can be accessible by **public web server**
+3. **internal-admin-service** : This service is not exposed to internet. Attacker will try to access this service and retrive sensitive data by ssrf attack.
+
+
+
+
+
