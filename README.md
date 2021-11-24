@@ -31,9 +31,9 @@ To prevent SSRF vulnerabilities in web applications, it is recommended to adhere
 
 We have created three service for demo purpose
 
-1. **public-web-service** : This service is exposed on internet
-2. **internal-user-service** : This service is not exposed to internet but the resources can be accessible by **public web server**
-3. **internal-admin-service** : This service is not exposed to internet. Attacker will try to access this service and retrive sensitive data by ssrf attack.
+1. **public-web-service** : This service is exposed on internet. Running on port **8080**
+2. **internal-user-service** : This service is not exposed to internet but the resources can be accessible by **public web server** . Running on port **8081**
+3. **internal-admin-service** : This service is not exposed to internet. Attacker will try to access this service and retrive sensitive data by ssrf attack. Running on port **8083**
 
 ![Private server](SSRF_new.jpg)
 
